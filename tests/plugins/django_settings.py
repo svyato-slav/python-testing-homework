@@ -52,4 +52,4 @@ def cache(settings) -> BaseCache:
 @pytest.fixture()
 def _placeholder_api_url(settings) -> None:
     """Mock PLACEHOLDER_API_URL from settings."""
-    settings.PLACEHOLDER_API_URL = 'http://localhost:3000'
+    settings.PLACEHOLDER_API_URL = 'http://json-server:3000'
