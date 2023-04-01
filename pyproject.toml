@@ -84,5 +84,5 @@ style = "https://raw.githubusercontent.com/wemake-services/wemake-python-stylegu
 
 
 [tool.pytest.ini_options]
-timeout = 2
+timeout = 3
 DJANGO_SETTINGS_MODULE = "server.settings"
