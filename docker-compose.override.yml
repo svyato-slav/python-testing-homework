@@ -24,6 +24,9 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
+    depends_on:
+      - db
+      - json-server
   json-server:
     build:
       context: .
