@@ -26,6 +26,7 @@ services:
         - GID=${GID:-1000}
   json-server:
     build:
+      context: .
       dockerfile: docker/json-server/Dockerfile
     command: json-server --host 0.0.0.0 --watch ./db.json
     ports:
