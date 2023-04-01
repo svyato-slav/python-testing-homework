@@ -68,7 +68,7 @@ def mf(seed: int) -> Field:
 
 @pytest.fixture()
 def user_password(mf) -> str:
-    """Default password for user factory."""
+    """Generate password for user factory."""
     return mf('person.password')
 
 
