@@ -24,7 +24,12 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
-
+  json_server:
+    build:
+      dockerfile: docker/json-server/Dockerfile
+    command: json-server --host 0.0.0.0 --watch ./db.json
+    ports:
+      - "3000:3000"
 networks:
   # Fake API network:
   bitrixnet:
