@@ -27,6 +27,8 @@ services:
     depends_on:
       - db
       - json-server
+    environment:
+        DJANGO_PLACEHOLDER_API_URL: http://json-server:3000
   json-server:
     build:
       context: .
