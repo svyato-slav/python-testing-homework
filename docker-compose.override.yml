@@ -31,6 +31,10 @@ services:
     command: json-server --host 0.0.0.0 --watch ./db.json
     ports:
       - "3000:3000"
+    networks:
+      - webnet
+
 networks:
   # Fake API network:
   bitrixnet:
+  webnet:
