@@ -1,7 +1,12 @@
 import datetime
 from typing import Callable, Protocol, TypedDict, final
 
+import pytest
+from django_fakery.faker_factory import Factory
+from mimesis.schema import Field
 from typing_extensions import TypeAlias, Unpack
+
+from server.apps.identity.models import User
 
 
 class UserData(TypedDict, total=False):
@@ -45,3 +50,60 @@ class RegistrationDataFactory(Protocol):  # type: ignore[misc]
 
 
 UserAssertion: TypeAlias = Callable[[str, UserData], None]
+
+
+@final
+class UserFactory(Protocol):  # type: ignore[misc]
+    """A factory to generate a `User` instance."""
+
+    def __call__(self, **fields) -> User:
+        """Profile data factory protocol."""
+
+
+@pytest.fixture()
+def mf(seed: int) -> Field:
+    """Returns the current mimesis `Field`."""
+    return Field(seed=seed)
+
+
+@pytest.fixture()
+def user_password(mf) -> str:
+    """Default password for user factory."""
+    return mf('person.password')
+
+
+@pytest.fixture()
+def user_email(mf) -> str:
+    """Email of the current user."""
+    return mf('person.email')
+
+
+@pytest.fixture()
+def user_factory(
+    fakery: Factory[User],
+    faker_seed: int,
+) -> UserFactory:
+    """Creates a factory to generate a user instance."""
+    def factory(**fields):
+        password = fields.pop('password')
+        return fakery.make(  # type: ignore[call-overload]
+            model=User,
+            fields=fields,
+            seed=faker_seed,
+            pre_save=[lambda _user: _user.set_password(password)],
+        )
+    return factory
+
+
+@pytest.fixture()
+def user(
+    user_factory: UserFactory,
+    user_email: str,
+    user_password: str,
+) -> User:
+    """The current user."""
+    return user_factory(
+        email=user_email,
+        password=user_password,
+        is_active=True,
+    )
