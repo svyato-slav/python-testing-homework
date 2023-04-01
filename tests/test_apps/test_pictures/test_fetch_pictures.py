@@ -17,7 +17,7 @@ def assert_correct_pictures(response, limit) -> None:
 
 @pytest.mark.django_db()
 def test_fetch_pictures(
-    placeholder_api_url, user,
+    _placeholder_api_url, user,
 ) -> None:
     """Test fetch pictures work with HTTP."""
     limit = 5

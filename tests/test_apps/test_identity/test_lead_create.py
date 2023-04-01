@@ -11,7 +11,7 @@ def assert_correct_lead_id(lead_id, user) -> None:
 
 @pytest.mark.django_db()
 def test_lead_create(
-    placeholder_api_url, user,
+    _placeholder_api_url, user,
 ) -> None:
     """Test leads work with HTTP."""
     user_create_new = container.instantiate(UserCreateNew)
