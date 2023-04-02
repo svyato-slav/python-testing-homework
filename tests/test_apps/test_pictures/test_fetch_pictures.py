@@ -15,6 +15,7 @@ def assert_correct_pictures(response, limit) -> None:
             assert getattr(picture, field, None)
 
 
+@pytest.mark.timeout(2)
 @pytest.mark.django_db()
 def test_fetch_pictures(
     user,
