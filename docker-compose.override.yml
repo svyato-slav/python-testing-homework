@@ -31,7 +31,6 @@ services:
       DJANGO_PLACEHOLDER_API_URL: http://json-server:3000
   json-server:
     image: "codfish/json-server"
-    #command:  npm run dev
     volumes:
       - ./docker/json-server/db.js:/app/db.js
     ports:
