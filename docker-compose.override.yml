@@ -24,7 +24,23 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
+    depends_on:
+      - db
+      - json-server
+    environment:
+      DJANGO_PLACEHOLDER_API_URL: http://json-server:3000
+  json-server:
+    image: "codfish/json-server"
+    volumes:
+      - ./docker/json-server/db.js:/app/db.js
+    ports:
+      - "3000:3000"
+    networks:
+      - webnet
+    environment:
+      PORT: 3000
 
 networks:
   # Fake API network:
   bitrixnet:
+  webnet:

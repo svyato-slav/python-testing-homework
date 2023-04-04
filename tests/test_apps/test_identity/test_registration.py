@@ -5,8 +5,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.test import Client
 from django.urls import reverse
-from mimesis.locales import Locale
-from mimesis.schema import Field, Schema
+from mimesis.schema import Schema
 from typing_extensions import Unpack
 
 if TYPE_CHECKING:
@@ -21,12 +20,12 @@ if TYPE_CHECKING:
 
 @pytest.fixture()
 def registration_data_factory(
-    faker_seed: int,
+    mf,
+    seed: int,
 ) -> 'RegistrationDataFactory':
     """Returns factory for fake random data for registration."""
 
     def factory(**fields: Unpack['RegistrationData']) -> 'RegistrationData':
-        mf = Field(locale=Locale.RU, seed=faker_seed)
         password = mf('password')  # by default passwords are equal
         schema = Schema(schema=lambda: {
             'email': mf('person.email'),
@@ -86,6 +85,7 @@ def expected_user_data(registration_data: 'RegistrationData') -> 'UserData':
     }
 
 
+@pytest.mark.slow()
 @pytest.mark.django_db()
 def test_valid_registration(
     client: Client,
@@ -98,6 +98,7 @@ def test_valid_registration(
         reverse('identity:registration'),
         data=registration_data,
     )
+
     assert response.status_code == HTTPStatus.FOUND
     assert response.get('Location') == reverse('identity:login')
     assert_correct_user(registration_data['email'], expected_user_data)

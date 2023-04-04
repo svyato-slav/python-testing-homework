@@ -22,7 +22,7 @@ class UserCreateNew(object):
 
     _settings: Settings
 
-    def __call__(self, user: User) -> None:
+    def __call__(self, user: User) -> int:
         """
         Execute the usecase.
 
@@ -42,7 +42,8 @@ class UserCreateNew(object):
         self,
         user: User,
         new_ids: placeholder.UserResponse,
-    ) -> None:
+    ) -> int:
         # This can be moved to some other place once this becomes too complex:
         user.lead_id = new_ids.id
         user.save(update_fields=['lead_id'])
+        return user.lead_id
