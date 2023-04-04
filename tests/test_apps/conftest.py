@@ -1,11 +1,11 @@
 import pytest
 
 
-def pytest_collection_modifyitems(tests):
+def pytest_collection_modifyitems(items):  # noqa: WPS110
     """Add timeout mark for slow tests."""
-    for test in tests:
-        for _ in test.iter_markers(name='slow'):
-            test.add_marker(pytest.mark.timeout(2))
+    for item in items:  # noqa: WPS110
+        for _ in item.iter_markers(name='slow'):
+            item.add_marker(pytest.mark.timeout(2))
 
 
 @pytest.fixture(autouse=True)
