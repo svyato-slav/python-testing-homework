@@ -85,6 +85,7 @@ def expected_user_data(registration_data: 'RegistrationData') -> 'UserData':
     }
 
 
+@pytest.mark.slow()
 @pytest.mark.django_db()
 def test_valid_registration(
     client: Client,
@@ -97,6 +98,7 @@ def test_valid_registration(
         reverse('identity:registration'),
         data=registration_data,
     )
+
     assert response.status_code == HTTPStatus.FOUND
     assert response.get('Location') == reverse('identity:login')
     assert_correct_user(registration_data['email'], expected_user_data)

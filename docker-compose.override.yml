@@ -30,14 +30,16 @@ services:
     environment:
       DJANGO_PLACEHOLDER_API_URL: http://json-server:3000
   json-server:
-    build:
-      context: .
-      dockerfile: docker/json-server/Dockerfile
-    command: json-server --host 0.0.0.0 --watch ./db.json
+    image: "codfish/json-server"
+    #command:  npm run dev
+    volumes:
+      - ./docker/json-server/db.js:/app/db.js
     ports:
       - "3000:3000"
     networks:
       - webnet
+    environment:
+      PORT: 3000
 
 networks:
   # Fake API network:

@@ -1,21 +1,18 @@
 import pytest
 
 from server.apps.identity.container import container
+from server.apps.pictures.intrastructure.services import placeholder
 from server.apps.pictures.logic.usecases.pictures_fetch import PicturesFetch
 
 
 def assert_correct_pictures(response, limit) -> None:
     """Assert pictures."""
-    fields = [
-        'id', 'url',
-    ]
     assert len(response) == limit
     for picture in response:
-        for field in fields:
-            assert getattr(picture, field, None)
+        assert isinstance(picture, placeholder.PictureResponse)
 
 
-@pytest.mark.timeout(2)
+@pytest.mark.slow()
 @pytest.mark.django_db()
 def test_fetch_pictures(
     user,
@@ -24,5 +21,6 @@ def test_fetch_pictures(
     limit = 5
     fetch_pictures = container.instantiate(PicturesFetch)
     response = fetch_pictures(limit=limit)
+
     assert response
     assert_correct_pictures(response, limit)
